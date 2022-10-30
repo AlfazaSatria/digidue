@@ -11,8 +11,8 @@
 					<i class="fas fa-home"></i><span>Home</span>
 				</a>
 			</li>
-		
-			
+
+
 			@if (in_array(auth()->user()->role_id, ['1','2']))
 			<li class="">
 				<a href="#" class="nav-link has-dropdown">
@@ -54,13 +54,17 @@
 					</li>
 				</ul>
 			</li>
-			@endif
+			@elseif(auth()->user()->role_id == 3)
 			<li class="">
 				<a class="nav-link" href="{{  route('schedule.show.ultg')  }}">
 					<i class="fas fa-calendar"></i><span>Jadwal</span>
 				</a>
 			</li>
+			@else
+			<h1>Empty</h1>
+			@endif
 		</ul>
 
 	</aside>
 </div>
+

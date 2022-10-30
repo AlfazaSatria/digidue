@@ -41,6 +41,7 @@ Route::prefix('schedule')->group(function () {
         Route::post('add', 'ScheduleController@addSchedule')->name('add');
         Route::post('submitted/{id}', 'ScheduleController@updateSubmittedSchedule')->name('submitted.schedule');
         Route::post('approve/revision/{id}', 'ScheduleController@acceptSchedule')->name('accept.revision.schedule');
+        Route::post('decline/revision/{id}', 'ScheduleController@declineSchedule')->name('decline.revision.schedule');
         Route::get('show/baytype/{id}', 'ScheduleController@showAddBayType')->name('show.baytype');
         Route::get('show/equipmentout/{id}', 'ScheduleController@showAddEquipmentOut')->name('show.equipmentout');
         Route::delete('destroy/{id}','ScheduleController@destroy')->name('destroy');

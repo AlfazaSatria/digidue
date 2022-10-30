@@ -61,8 +61,8 @@ class ScheduleController extends Controller
                     if ($schedule->approve_id == 1) {
                         $btn = '<a class="btn btn-sm btn-danger" >Disetujui</a>';;
                     } else if ($schedule->approve_id == 3) {
-                        $btn = '<button id="changestatus" class="btn btn-sm btn-success" data-id="1">Setujui</button>';;
-                        $btn .= '<button id="changestatus" class="btn btn-sm btn-danger" data-id="2">Tolak</button>';;
+                        $btn = '<button id="changestatus" class="btn btn-sm btn-success" data-id="' . $schedule->id . '">Setujui</button>';;
+                        $btn .= '<button id="changeapprove" class="btn btn-sm btn-danger" data-id="' . $schedule->id . '">Tolak</button>';;
                     } else {
                         $btn = '<a class="btn btn-sm btn-danger" >Ditolak</a>';;
                     }
@@ -356,6 +356,25 @@ class ScheduleController extends Controller
             return response()->json([
                 'status' => '500',
                 'message' => $err->getMessage()
+            ]);
+        }
+    }
+
+    public function declineSchedule($id){
+        try{
+            $schedule = RevisionSchedule::firstwhere('id', $id);
+
+            $schedule->approve_id=2;
+            $schedule->save();
+            
+            return response()->json([
+                'status' => '200',
+                'message' => 'Success Update Data'
+            ]);
+        }catch(Exception $err){
+            return response()->json([
+                'status' => '500',
+                'message' => $err->getMessage() 
             ]);
         }
     }

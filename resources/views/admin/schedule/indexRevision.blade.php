@@ -90,10 +90,10 @@
       });        
     });
 
-    $(document).on('click', '#delete', function(){
+    $(document).on('click', '#changeapprove', function(){
       swal({
-              title: 'Delete',
-              text: 'Anda yakin ingin menghapus data ini?',
+              title: 'Update',
+              text: 'Anda yakin ingin menolak jadwal ini?',
               icon: 'warning',
               buttons: true,
             })
@@ -102,24 +102,26 @@
                 let id = $(this).data("id");
                 $.ajax(
                 {
-                    url: `/sales/delete/${id}`,
-                    type: 'delete',
+                    url: `/schedule/decline/revision/${id}`,
+                    type: 'POST',
                     data: {
                         id
                     },
                     success: function (response)
                     {
-                        swal("Success", "Data Anda Telah Dihapus!", "success");
+                        swal("Success", "Data Anda Telah Dirubah", "success");
                         oTable.ajax.reload(null,false);
                     },
                     error: function(xhr) {
                         $("#save-data").removeClass("disabled btn-progress");
-                    swal("Oops!", "Error Delete Data!", "error");
+                    swal("Oops!", "Error Update Data!", "error");
                     }
                 });
               };
       });        
     });
+
+    
 </script>
 
 

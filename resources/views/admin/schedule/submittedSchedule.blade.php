@@ -100,9 +100,8 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="operation_plan">Rencana Operasi </label>
-                        <select class="form-control select2" id="operation_plan" name="operation_plan" disabled>
-                            <option value="{{ $schedule->operation_plan }}">{{$schedule->operation_plan}}</option>
-                        </select>
+                       
+                        <input type="text" class="form-control" id="operation_plan" name="operation_plan" placeholder="Input ROB/ROM/ROH">
                     </div>
                 </div>
             </div>

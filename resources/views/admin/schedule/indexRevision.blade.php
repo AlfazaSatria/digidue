@@ -62,7 +62,7 @@
     $(document).on('click', '#changestatus', function(){
       swal({
               title: 'Update',
-              text: 'Anda yakin ingin merubah status ini?',
+              text: 'Anda yakin ingin approve jadwal ini?',
               icon: 'warning',
               buttons: true,
             })
@@ -71,7 +71,7 @@
                 let id = $(this).data("id");
                 $.ajax(
                 {
-                    url: `/schedule/update/status/${id}`,
+                    url: `/schedule/approve/revision/${id}`,
                     type: 'POST',
                     data: {
                         id

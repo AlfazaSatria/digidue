@@ -332,4 +332,31 @@ class ScheduleController extends Controller
             ]);
         }
     }
+
+    public function acceptSchedule($id){
+        try{
+            $Revschedule = RevisionSchedule::firstwhere('id', $id);
+            $schedule = Schedule::firstwhere('id',$Revschedule['schedule_id']);
+
+            $schedule->operation_plan = $Revschedule['operation_plan'];
+            $schedule->start_date = $Revschedule['start_date'];
+            $schedule->end_date = $Revschedule['end_date'];
+            $schedule->start_hours= $Revschedule['start_hours'];
+            $schedule->end_hours= $Revschedule['end_hours'];
+            $schedule->save();
+
+            $Revschedule->approve_id = 1;
+            $Revschedule->save();
+
+            return response()->json([
+                'status' => '200',
+                'message' => $Revschedule
+            ]);
+        }catch(Exception $err){
+            return response()->json([
+                'status' => '500',
+                'message' => $err->getMessage()
+            ]);
+        }
+    }
 }

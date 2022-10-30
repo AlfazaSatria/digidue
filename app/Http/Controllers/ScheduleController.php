@@ -27,7 +27,7 @@ class ScheduleController extends Controller
     public function dataSchedule()
     {
         $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')
-            ->where('approve_id', '=', 4)
+            ->whereIn('approve_id', [1,2,4])
             ->whereIn('role_id', [1, 2]);
 
         if (request()->ajax()) {
@@ -62,7 +62,7 @@ class ScheduleController extends Controller
                         $btn = '<a class="btn btn-sm btn-danger" >Disetujui</a>';;
                     } else if ($schedule->approve_id == 3) {
                         $btn = '<button id="changestatus" class="btn btn-sm btn-success" data-id="' . $schedule->id . '">Setujui</button>';;
-                        $btn .= '<button id="changeapprove" class="btn btn-sm btn-danger" data-id="' . $schedule->id . '">Tolak</button>';;
+                        $btn .= '<button id="changeapprove" class="btn btn-sm btn-danger text" data-id="' . $schedule->id . '">Tolak</button>';;
                     } else {
                         $btn = '<a class="btn btn-sm btn-danger" >Ditolak</a>';;
                     }
@@ -87,9 +87,9 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="btn btn-sm btn-success" >Pengajuan Disetujui</a>';
+                        $btn = '<a class="btn btn-sm btn-success text-light" >Pengajuan Disetujui</a>';
                     } else if($schedule->approve_id == 2) {
-                        $btn = '<a class="btn btn-sm btn-danger" >Pengajuan Ditolak</a>';
+                        $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
                     }else if($schedule->submitted != 0) {
                         $btn = '<a >Proses Pengajuan</a>';
                     }else{
@@ -343,6 +343,7 @@ class ScheduleController extends Controller
             $schedule->end_date = $Revschedule['end_date'];
             $schedule->start_hours= $Revschedule['start_hours'];
             $schedule->end_hours= $Revschedule['end_hours'];
+            $schedule->approve_id = 1;
             $schedule->save();
 
             $Revschedule->approve_id = 1;
@@ -362,10 +363,13 @@ class ScheduleController extends Controller
 
     public function declineSchedule($id){
         try{
-            $schedule = RevisionSchedule::firstwhere('id', $id);
+            $Revschedule = RevisionSchedule::firstwhere('id', $id);
+            $schedule = Schedule::firstwhere('id',$Revschedule['schedule_id']);
 
-            $schedule->approve_id=2;
+            $schedule->approve_id = 2;
             $schedule->save();
+            $Revschedule->approve_id=2;
+            $Revschedule->save();
             
             return response()->json([
                 'status' => '200',

@@ -169,7 +169,7 @@ class ScheduleController extends Controller
 
     public function dataScheduleROB()
     {
-        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->where('operation_plan', '=', 'ROB');
+        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROB','ROM','ROH'])->get();
         if (request()->ajax()) {
             return Datatables::of($schedule)
                 ->addIndexColumn()
@@ -198,7 +198,7 @@ class ScheduleController extends Controller
 
     public function dataScheduleROM()
     {
-        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->where('operation_plan', '=', 'ROM');
+        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROM','ROH']);
         if (request()->ajax()) {
             return Datatables::of($schedule)
                 ->addIndexColumn()

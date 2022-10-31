@@ -46,5 +46,6 @@ Route::prefix('schedule')->group(function () {
         Route::get('show/equipmentout/{id}', 'ScheduleController@showAddEquipmentOut')->name('show.equipmentout');
         Route::delete('destroy/{id}','ScheduleController@destroy')->name('destroy');
         Route::get('export_excel', 'ScheduleController@export_excel')->name('export_excel');
+        Route::post('import', 'ScheduleController@ImportSchedule')->name('import');
     });
 });

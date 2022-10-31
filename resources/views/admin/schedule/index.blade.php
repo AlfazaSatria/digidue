@@ -11,6 +11,7 @@
             </a>
             <a href="{{ route('schedule.export_excel') }}" class="btn btn-icon icon-left btn-success"></i>Export Jadwal
         </a>
+        
         </div>
     </div>
     <div class="card-body">
@@ -19,6 +20,21 @@
             </table>
         </div>
     </div>
+  
+    <div class="col-md-12">
+      <form method="post" enctype="multipart/form-data">
+        @csrf
+        <input type="file" class="form-control" name="file">
+        <small id="passwordHelpBlock" class="form-text text-muted">
+            Type : <strong>csv,xls,xlsx</strong>
+        </small>
+        <br>
+      <button formaction="{{ route('schedule.import') }}" type="submit"
+        class="btn  btn-icon btn-primary btn-block"><i class="fas fa-upload"></i>
+        Import Jadwal Excel 
+      </button>
+    </form>
+    </div>  
     <div class="card-footer bg-whitesmoke">
         Digidue
     </div>

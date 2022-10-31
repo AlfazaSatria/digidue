@@ -9,12 +9,14 @@ use App\Models\EquipmentOut;
 use App\Models\Location;
 use App\Models\Month;
 use App\Models\RevisionSchedule;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Schedule;
 use App\User;
 use Illuminate\Http\Request;
 use DataTables;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use App\Imports\ScheduleImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ScheduleController extends Controller
@@ -389,4 +391,37 @@ class ScheduleController extends Controller
 	{
 		return Excel::download(new ScheduleExport, 'schedule.xlsx');
 	}
+
+    public function ImportSchedule(Request $request)
+    {
+    
+
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:csv,xls,xlsx',
+
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }else {
+            $file = $request->file('file');
+            $file_name = 'schedule' . \Carbon\Carbon::now()->isoFormat('D-M-YY-hh-mm-ss-') . $file->getClientOriginalName();
+            $file_path = 'imports/schedule';
+            $file->move($file_path, $file_name);
+
+            
+            try {
+                $import_schedules = Excel::import(new ScheduleImport(), public_path('/imports/schedule/' . $file_name));
+            } catch (\Throwable $th) {
+                return redirect()->back()->with(['errorMessage' => 'Import Failed - ' . $th->getMessage()]);
+            }
+            if ($import_schedules) {
+                return redirect()->route('schedule.show')->with(['successMessage' => 'File Imported - ' . $file_name]);
+            }
+        }
+        return redirect()->back()
+            ->withInput()
+            ->withErrors($validator)
+            ->with(['errorMessage' => 'Data Invalid']);
+    }
 }

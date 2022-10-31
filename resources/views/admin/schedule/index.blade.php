@@ -9,6 +9,8 @@
             <a href="{{ route('schedule.show.add.schedule') }}" class="btn btn-icon icon-left btn-info"><i class="fas fa-plus"
                     type="button"></i>Tambah Jadwal
             </a>
+            <a href="{{ route('schedule.export_excel') }}" class="btn btn-icon icon-left btn-success"></i>Export Jadwal
+        </a>
         </div>
     </div>
     <div class="card-body">

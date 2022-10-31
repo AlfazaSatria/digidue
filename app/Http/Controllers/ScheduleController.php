@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ScheduleExport;
 use App\Models\BayType;
 use App\Models\Attributes;
 use App\Models\EquipmentOut;
 use App\Models\Location;
 use App\Models\Month;
 use App\Models\RevisionSchedule;
+use App\Models\Schedule;
 use App\User;
 use Illuminate\Http\Request;
 use DataTables;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ScheduleController extends Controller
 {
@@ -381,4 +384,9 @@ class ScheduleController extends Controller
             ]);
         }
     }
+
+    public function export_excel()
+	{
+		return Excel::download(new ScheduleExport, 'schedule.xlsx');
+	}
 }

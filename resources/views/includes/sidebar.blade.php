@@ -56,9 +56,37 @@
 			</li>
 			@elseif(auth()->user()->role_id == 3)
 			<li class="">
-				<a class="nav-link" href="{{  route('schedule.show.ultg')  }}">
-					<i class="fas fa-calendar"></i><span>Jadwal</span>
+				<a href="#" class="nav-link has-dropdown">
+					<i class="fas fa-book"></i><span>Jadwal</span>
 				</a>
+				<ul class="dropdown-menu">
+					<li class="">
+						<a class="nav-link" href="{{ route('schedule.show.ultg') }}">
+							<i class="fas fa-calendar"></i><span>Jadwal</span>
+						</a>
+					</li>
+				</ul>
+				<ul class="dropdown-menu">
+					<li class="">
+						<a class="nav-link" href="{{ route('schedule.show.ROB.ultg') }}">
+							<i class="fas fa-calendar"></i><span>Jadwal ROB</span>
+						</a>
+					</li>
+				</ul>
+				<ul class="dropdown-menu">
+					<li class="">
+						<a class="nav-link" href="{{ route('schedule.show.ROM.ultg') }}">
+							<i class="fas fa-calendar"></i><span>Jadwal ROM</span>
+						</a>
+					</li>
+				</ul>
+				<ul class="dropdown-menu">
+					<li class="">
+						<a class="nav-link" href="{{ route('schedule.show.ROH.ultg') }}">
+							<i class="fas fa-calendar"></i><span>Jadwal ROH</span>
+						</a>
+					</li>
+				</ul>
 			</li>
 			@else
 			<h1>Empty</h1>

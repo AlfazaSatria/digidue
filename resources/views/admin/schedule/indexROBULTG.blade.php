@@ -1,12 +1,14 @@
 @extends('layouts.app')
-@section('title', 'Jadwal ULTG')
+@section('title', 'Jadwal')
 @section('content')
 
 <div class="card">
     <div class="card-header">
-        <h4>Daftar Jadwal </h4>
+        <h4>Daftar Jadwal ROB</h4>
         <div class="card-header-action">
-           
+            <a href="{{ route('schedule.show.add.schedule') }}" class="btn btn-icon icon-left btn-info"><i class="fas fa-plus"
+                    type="button"></i>Tambah Jadwal
+            </a>
         </div>
     </div>
     <div class="card-body">
@@ -61,9 +63,67 @@
         });
     });
 
-   
+    $(document).on('click', '#changestatus', function(){
+      swal({
+              title: 'Update',
+              text: 'Anda yakin ingin merubah status ini?',
+              icon: 'warning',
+              buttons: true,
+            })
+            .then((willProccess) => {
+              if(willProccess){
+                let id = $(this).data("id");
+                $.ajax(
+                {
+                    url: `/schedule/update/status/${id}`,
+                    type: 'POST',
+                    data: {
+                        id
+                    },
+                    success: function (response)
+                    {
+                        swal("Success", "Data Anda Telah Dirubah", "success");
+                        oTable.ajax.reload(null,false);
+                    },
+                    error: function(xhr) {
+                        $("#save-data").removeClass("disabled btn-progress");
+                    swal("Oops!", "Error Update Data!", "error");
+                    }
+                });
+              };
+      });        
+    });
 
-   
+    $(document).on('click', '#delete', function(){
+      swal({
+              title: 'Delete',
+              text: 'Anda yakin ingin menghapus data ini?',
+              icon: 'warning',
+              buttons: true,
+            })
+            .then((willProccess) => {
+              if(willProccess){
+                let id = $(this).data("id");
+                $.ajax(
+                {
+                    url: `/schedule/destroy/${id}`,
+                    type: 'delete',
+                    data: {
+                        id
+                    },
+                    success: function (response)
+                    {
+                        swal("Success", "Data Anda Telah Dihapus!", "success");
+                        oTable.ajax.reload(null,false);
+                    },
+                    error: function(xhr) {
+                        $("#save-data").removeClass("disabled btn-progress");
+                    swal("Oops!", "Error Delete Data!", "error");
+                    }
+                });
+              };
+      });        
+    });
 </script>
 
 

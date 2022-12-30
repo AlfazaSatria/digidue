@@ -85,10 +85,7 @@ class ScheduleController extends Controller
 
     public function dataScheduleULTG()
     {
-        // $dateNow = Carbon::now();
-        // $day= $dateNow->day;
-        // $hour = $dateNow->hour;
-        // dd($dateNow);
+      
         
         $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month');
 
@@ -120,6 +117,114 @@ class ScheduleController extends Controller
                 ->make(true);
         }
         return view('admin.schedule.indexULTG')->with('title', 'Jadwal ULTG');
+    }
+
+    public function dataScheduleROBULTG()
+    {
+      
+        
+        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROB','ROM','ROH'])->get();
+
+        if (request()->ajax()) {
+            return Datatables::of($schedule)
+                ->addIndexColumn()
+                ->addColumn('approve', function ($schedule) {
+                    if ($schedule->approve_id == 1) {
+                        $btn = '<a class="btn btn-sm btn-success text-light" >Pengajuan Disetujui</a>';
+                    } else if($schedule->approve_id == 2) {
+                        $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
+                    }else if($schedule->submitted != 0) {
+                        $btn = '<a >Proses Pengajuan</a>';
+                    }else{
+                        $btn = '<a  > - </a>';
+                    }
+                    return $btn;
+                })
+                ->addColumn('action', function ($schedule) {
+                    if($schedule->submitted != 0){
+                        $button = '<a>-</a>';
+                    }else{
+                        $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
+                    }
+                    
+                    return $button;
+                })
+                ->rawColumns(['approve', 'action'])
+                ->make(true);
+        }
+        return view('admin.schedule.indexROBULTG')->with('title', 'Jadwal ROB ULTG');
+    }
+
+    public function dataScheduleROMULTG()
+    {
+      
+        
+        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROM','ROH'])->get();
+
+        if (request()->ajax()) {
+            return Datatables::of($schedule)
+                ->addIndexColumn()
+                ->addColumn('approve', function ($schedule) {
+                    if ($schedule->approve_id == 1) {
+                        $btn = '<a class="btn btn-sm btn-success text-light" >Pengajuan Disetujui</a>';
+                    } else if($schedule->approve_id == 2) {
+                        $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
+                    }else if($schedule->submitted != 0) {
+                        $btn = '<a >Proses Pengajuan</a>';
+                    }else{
+                        $btn = '<a  > - </a>';
+                    }
+                    return $btn;
+                })
+                ->addColumn('action', function ($schedule) {
+                    if($schedule->submitted != 0){
+                        $button = '<a>-</a>';
+                    }else{
+                        $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
+                    }
+                    
+                    return $button;
+                })
+                ->rawColumns(['approve', 'action'])
+                ->make(true);
+        }
+        return view('admin.schedule.indexROMULTG')->with('title', 'Jadwal ROM ULTG');
+    }
+
+    public function dataScheduleROHULTG()
+    {
+      
+        
+        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->where('operation_plan', '=', 'ROH');
+
+        if (request()->ajax()) {
+            return Datatables::of($schedule)
+                ->addIndexColumn()
+                ->addColumn('approve', function ($schedule) {
+                    if ($schedule->approve_id == 1) {
+                        $btn = '<a class="btn btn-sm btn-success text-light" >Pengajuan Disetujui</a>';
+                    } else if($schedule->approve_id == 2) {
+                        $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
+                    }else if($schedule->submitted != 0) {
+                        $btn = '<a >Proses Pengajuan</a>';
+                    }else{
+                        $btn = '<a  > - </a>';
+                    }
+                    return $btn;
+                })
+                ->addColumn('action', function ($schedule) {
+                    if($schedule->submitted != 0){
+                        $button = '<a>-</a>';
+                    }else{
+                        $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
+                    }
+                    
+                    return $button;
+                })
+                ->rawColumns(['approve', 'action'])
+                ->make(true);
+        }
+        return view('admin.schedule.indexROHULTG')->with('title', 'Jadwal ROH ULTG');
     }
 
     public function showUpdateSumbittedSchedule($id){

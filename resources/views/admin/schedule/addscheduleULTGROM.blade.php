@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h4>Tambah Jadwal</h4>
+        <h4>Tambah Jadwal ROM</h4>
     </div>
     <div class="card-body">
         <form id="schedule-add">
@@ -113,10 +113,8 @@
                     <div class="form-group">
                         <label for="operation_plan">Rencana Operasi </label>
                         <select class="form-control select2" id="operation_plan" name="operation_plan">
-                            <option disabled selected>Pilih Rencana Operasi </option>
-                            <option value="ROB">ROB</option>
                             <option value="ROM">ROM</option>
-                            <option value="ROH">ROH</option>
+                        
                         </select>
                     </div>
                 </div>

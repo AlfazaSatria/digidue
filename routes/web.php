@@ -35,6 +35,9 @@ Route::prefix('schedule')->group(function () {
         Route::get('index/ROB', 'ScheduleController@dataScheduleROB')->name('show.ROB');
         Route::get('index/ROM', 'ScheduleController@dataScheduleROM')->name('show.ROM');
         Route::get('index/ROH', 'ScheduleController@dataScheduleROH')->name('show.ROH');
+        Route::get('index/ROB/ultg', 'ScheduleController@dataScheduleROBULTG')->name('show.ROB.ultg');
+        Route::get('index/ROM/ultg', 'ScheduleController@dataScheduleROMULTG')->name('show.ROM.ultg');
+        Route::get('index/ROH/ultg', 'ScheduleController@dataScheduleROHULTG')->name('show.ROH.ultg');
         Route::get('index/ultg', 'ScheduleController@dataScheduleULTG')->name('show.ultg');
         Route::get('show/add/schedule', 'ScheduleController@showAddSchedule')->name('show.add.schedule');
         Route::get('show/add/schedule/ultg', 'ScheduleController@showAddScheduleULTG')->name('show.add.schedule.ultg');

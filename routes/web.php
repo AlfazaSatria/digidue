@@ -37,8 +37,10 @@ Route::prefix('schedule')->group(function () {
         Route::get('index/ROH', 'ScheduleController@dataScheduleROH')->name('show.ROH');
         Route::get('index/ultg', 'ScheduleController@dataScheduleULTG')->name('show.ultg');
         Route::get('show/add/schedule', 'ScheduleController@showAddSchedule')->name('show.add.schedule');
+        Route::get('show/add/schedule/ultg', 'ScheduleController@showAddScheduleULTG')->name('show.add.schedule.ultg');
         Route::get('show/update/revision/{id}', 'ScheduleController@showUpdateSumbittedSchedule')->name('show.update.revision');
         Route::post('add', 'ScheduleController@addSchedule')->name('add');
+        Route::post('add/ultg', 'ScheduleController@addScheduleULTG')->name('add');
         Route::post('submitted/{id}', 'ScheduleController@updateSubmittedSchedule')->name('submitted.schedule');
         Route::post('approve/revision/{id}', 'ScheduleController@acceptSchedule')->name('accept.revision.schedule');
         Route::post('decline/revision/{id}', 'ScheduleController@declineSchedule')->name('decline.revision.schedule');

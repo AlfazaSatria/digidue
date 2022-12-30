@@ -17,6 +17,7 @@ use DataTables;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use App\Imports\ScheduleImport;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ScheduleController extends Controller
@@ -84,6 +85,11 @@ class ScheduleController extends Controller
 
     public function dataScheduleULTG()
     {
+        // $dateNow = Carbon::now();
+        // $day= $dateNow->day;
+        // $hour = $dateNow->hour;
+        // dd($dateNow);
+        
         $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month');
 
         if (request()->ajax()) {
@@ -267,6 +273,15 @@ class ScheduleController extends Controller
         return view('admin.schedule.addschedule')->with('title', 'Tambah Jadwal')->with('locations', $locations)->with('months', $months);
     }
 
+    public function showAddScheduleULTG()
+    {
+
+        $locations = Location::all();
+        $months = Month::all();
+
+        return view('admin.schedule.addscheduleULTG')->with('title', 'Tambah Jadwal')->with('locations', $locations)->with('months', $months);
+    }
+
     public function showAddBayType($id)
     {
         $bay_type = BayType::where('location_id', $id)->pluck("name", "id");
@@ -306,6 +321,68 @@ class ScheduleController extends Controller
             $schedule->notif = $request['notif'];
             $schedule->operation_plan = $request['operation_plan'];
             $schedule->save();
+
+            return response()->json([
+                'status' => '200',
+                'message' => 'Success add data',
+            ]);
+        } catch (Exception $err) {
+            return response()->json([
+                'status' => '500',
+                'error' => $err->getMessage()
+            ], 500);
+        }
+    }
+
+    public function addScheduleULTG(Request $request)
+    {
+        try {
+            $schedule = new Schedule();
+            $schedule->month_id = $request['month_id'];
+            $schedule->user_id = $request['user_id'];
+            $role = User::firstwhere('id', $request['user_id']);
+            $schedule->role_id = $role['role_id'];
+            $schedule->year = $request['year'];
+            $schedule->location_id = $request['location_id'];
+            $schedule->desc_job = $request['desc_job'];
+            $schedule->voltage = $request['voltage'];
+            $schedule->bay_type_id = $request['bay_type_id'];
+            $schedule->equipment_out_id = $request['equipment_out_id'];
+            $schedule->attribute = $request['attribute'];
+            $schedule->person_responsibles = $request['person_responsibles'];
+            $schedule->start_date = $request['start_date'];
+            $schedule->end_date = $request['end_date'];
+            $schedule->start_hours = $request['start_hours'];
+            $schedule->end_hours = $request['end_hours'];
+            $schedule->note = $request['note'];
+            $schedule->approve_id = 3;
+            $schedule->submitted = 1;
+            $schedule->notif = $request['notif'];
+            $schedule->operation_plan = $request['operation_plan'];
+            $schedule->save();
+
+            $revision = new RevisionSchedule ();
+            $revision->schedule_id = $schedule['id'];
+            $revision->month_id = $schedule['month_id'];
+            $revision->user_id = $schedule['user_id'];
+            $revision->role_id = 3;
+            $revision->year = $schedule['year'];
+            $revision->location_id = $schedule['location_id'];
+            $revision->desc_job = $schedule['desc_job'];
+            $revision->voltage = $schedule['voltage'];
+            $revision->bay_type_id = $schedule['bay_type_id'];
+            $revision->equipment_out_id = $schedule['equipment_out_id'];
+            $revision->attribute = $schedule['attribute'];
+            $revision->person_responsibles = $schedule['person_responsibles'];
+            $revision->start_date = $request['start_date'];
+            $revision->end_date = $request['end_date'];
+            $revision->start_hours = $request['start_hours'];
+            $revision->end_hours = $request['end_hours'];
+            $revision->note = $schedule['note'];
+            $revision->approve_id = 3;
+            $revision->notif = $schedule['notif'];
+            $revision->operation_plan = $schedule['operation_plan'];
+            $revision->save();
 
             return response()->json([
                 'status' => '200',

@@ -387,6 +387,33 @@ class ScheduleController extends Controller
         return view('admin.schedule.addscheduleULTG')->with('title', 'Tambah Jadwal')->with('locations', $locations)->with('months', $months);
     }
 
+    public function showAddScheduleROBULTG()
+    {
+
+        $locations = Location::all();
+        $months = Month::all();
+
+        return view('admin.schedule.addscheduleULTGROB')->with('title', 'Tambah Jadwal')->with('locations', $locations)->with('months', $months);
+    }
+
+    public function showAddScheduleROMULTG()
+    {
+
+        $locations = Location::all();
+        $months = Month::all();
+
+        return view('admin.schedule.addscheduleULTGROM')->with('title', 'Tambah Jadwal')->with('locations', $locations)->with('months', $months);
+    }
+
+    public function showAddScheduleROHULTG()
+    {
+
+        $locations = Location::all();
+        $months = Month::all();
+
+        return view('admin.schedule.addscheduleULTGROH')->with('title', 'Tambah Jadwal')->with('locations', $locations)->with('months', $months);
+    }
+
     public function showAddBayType($id)
     {
         $bay_type = BayType::where('location_id', $id)->pluck("name", "id");

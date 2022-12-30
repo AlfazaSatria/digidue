@@ -112,7 +112,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="operation_plan">Rencana Operasi </label>
-                        <select class="form-control select2" id="operation_plan" name="operation_plan">
+                        <select class="form-control select2 " id="operation_plan" name="operation_plan">
                             <option value="ROM">ROM</option>
                         
                         </select>

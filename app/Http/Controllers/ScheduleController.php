@@ -32,7 +32,7 @@ class ScheduleController extends Controller
     public function dataSchedule()
     {
         $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')
-            ->whereIn('approve_id', [1,2,4])
+            ->whereIn('approve_id', [1, 2, 4])
             ->whereIn('role_id', [1, 2]);
 
         if (request()->ajax()) {
@@ -85,8 +85,8 @@ class ScheduleController extends Controller
 
     public function dataScheduleULTG()
     {
-      
-        
+
+
         $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month');
 
         if (request()->ajax()) {
@@ -94,23 +94,23 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="btn btn-sm btn-success text-light" >Pengajuan Disetujui</a>';
-                    } else if($schedule->approve_id == 2) {
+                        $btn = '<a class="text-success" >Pengajuan Disetujui</a>';
+                    } else if ($schedule->approve_id == 2) {
                         $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
-                    }else if($schedule->submitted != 0) {
+                    } else if ($schedule->submitted != 0) {
                         $btn = '<a >Proses Pengajuan</a>';
-                    }else{
+                    } else {
                         $btn = '<a  > - </a>';
                     }
                     return $btn;
                 })
                 ->addColumn('action', function ($schedule) {
-                    if($schedule->submitted != 0){
+                    if ($schedule->submitted != 0) {
                         $button = '<a>-</a>';
-                    }else{
+                    } else {
                         $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
                     }
-                    
+
                     return $button;
                 })
                 ->rawColumns(['approve', 'action'])
@@ -121,32 +121,32 @@ class ScheduleController extends Controller
 
     public function dataScheduleROBULTG()
     {
-      
-        
-        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROB','ROM','ROH'])->get();
+
+
+        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROB', 'ROM', 'ROH'])->get();
 
         if (request()->ajax()) {
             return Datatables::of($schedule)
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="btn btn-sm btn-success text-light" >Pengajuan Disetujui</a>';
-                    } else if($schedule->approve_id == 2) {
+                        $btn = '<a class="text-success" >Pengajuan Disetujui</a>';
+                    } else if ($schedule->approve_id == 2) {
                         $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
-                    }else if($schedule->submitted != 0) {
+                    } else if ($schedule->submitted != 0) {
                         $btn = '<a >Proses Pengajuan</a>';
-                    }else{
+                    } else {
                         $btn = '<a  > - </a>';
                     }
                     return $btn;
                 })
                 ->addColumn('action', function ($schedule) {
-                    if($schedule->submitted != 0){
+                    if ($schedule->submitted != 0) {
                         $button = '<a>-</a>';
-                    }else{
+                    } else {
                         $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
                     }
-                    
+
                     return $button;
                 })
                 ->rawColumns(['approve', 'action'])
@@ -157,44 +157,79 @@ class ScheduleController extends Controller
 
     public function dataScheduleROMULTG()
     {
-      
-        
-        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROM','ROH'])->get();
+
+        $dateNow = Carbon::now();
+        $day = $dateNow->format('l');
+        $hour = $dateNow->format('H');
+        $conv_hour = (int)$hour;
+
+
+        if ($day == 'Saturday' || $day == 'Sunday') {
+            $status = 'Inactive';
+        } else if ($day == 'Friday' && $conv_hour >= 9) {
+            $status = 'Inactive';
+        } else {
+            $status = 'Active';
+        }
+
+
+
+        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROM', 'ROH'])->get();
 
         if (request()->ajax()) {
+
             return Datatables::of($schedule)
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="btn btn-sm btn-success text-light" >Pengajuan Disetujui</a>';
-                    } else if($schedule->approve_id == 2) {
+                        $btn = '<a class="text-sucess" >Pengajuan Disetujui</a>';
+                    } else if ($schedule->approve_id == 2) {
                         $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
-                    }else if($schedule->submitted != 0) {
+                    } else if ($schedule->submitted != 0) {
                         $btn = '<a >Proses Pengajuan</a>';
-                    }else{
+                    } else {
                         $btn = '<a  > - </a>';
                     }
                     return $btn;
                 })
                 ->addColumn('action', function ($schedule) {
-                    if($schedule->submitted != 0){
-                        $button = '<a>-</a>';
-                    }else{
-                        $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
+                    $dateNow = Carbon::now();
+                    $day = $dateNow->format('l');
+                    $hour = $dateNow->format('H');
+                    $conv_hour = (int)$hour;
+
+
+                    if ($day == 'Saturday' || $day == 'Sunday') {
+                        $status = 'Inactive';
+                    } else if ($day == 'Friday' && $conv_hour >= 9) {
+                        $status = 'Inactive';
+                    } else {
+                        $status = 'Active';
                     }
-                    
+
+
+                    if ($schedule->submitted != 0) {
+                        $button = '<a>-</a>';
+                    } else {
+                        if ($status == 'Active') {
+                            $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
+                        } else {
+                            $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success disabled">Ajukan Revisi</a>';
+                        }
+                    }
+
                     return $button;
                 })
                 ->rawColumns(['approve', 'action'])
                 ->make(true);
         }
-        return view('admin.schedule.indexROMULTG')->with('title', 'Jadwal ROM ULTG');
+        return view('admin.schedule.indexROMULTG')->with('title', 'Jadwal ROM ULTG')->with('status', $status);
     }
 
     public function dataScheduleROHULTG()
     {
-      
-        
+
+
         $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->where('operation_plan', '=', 'ROH');
 
         if (request()->ajax()) {
@@ -202,23 +237,23 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="btn btn-sm btn-success text-light" >Pengajuan Disetujui</a>';
-                    } else if($schedule->approve_id == 2) {
+                        $btn = '<a class="text-success" >Pengajuan Disetujui</a>';
+                    } else if ($schedule->approve_id == 2) {
                         $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
-                    }else if($schedule->submitted != 0) {
+                    } else if ($schedule->submitted != 0) {
                         $btn = '<a >Proses Pengajuan</a>';
-                    }else{
+                    } else {
                         $btn = '<a  > - </a>';
                     }
                     return $btn;
                 })
                 ->addColumn('action', function ($schedule) {
-                    if($schedule->submitted != 0){
+                    if ($schedule->submitted != 0) {
                         $button = '<a>-</a>';
-                    }else{
+                    } else {
                         $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
                     }
-                    
+
                     return $button;
                 })
                 ->rawColumns(['approve', 'action'])
@@ -227,22 +262,24 @@ class ScheduleController extends Controller
         return view('admin.schedule.indexROHULTG')->with('title', 'Jadwal ROH ULTG');
     }
 
-    public function showUpdateSumbittedSchedule($id){
+    public function showUpdateSumbittedSchedule($id)
+    {
         $schedule = Schedule::firstwhere('id', $id);
-        $month= Month::firstwhere('id', $schedule->month_id);
+        $month = Month::firstwhere('id', $schedule->month_id);
         $location = Location::firstwhere('id', $schedule->location_id);
         $bay_type = BayType::firstwhere('id', $schedule->bay_type_id);
-        $equipment_out= EquipmentOut::firstwhere('id', $schedule->equipment_out_id);
+        $equipment_out = EquipmentOut::firstwhere('id', $schedule->equipment_out_id);
 
         return view('admin.schedule.submittedSchedule')->with('schedule', $schedule)->with('month', $month)->with('location', $location)
-        ->with('bay_type', $bay_type)->with('equipment_out', $equipment_out);
+            ->with('bay_type', $bay_type)->with('equipment_out', $equipment_out);
     }
 
-    public function updateSubmittedSchedule(Request $request, $id){
-        try{
-            $schedule= Schedule::firstwhere('id', $id);
+    public function updateSubmittedSchedule(Request $request, $id)
+    {
+        try {
+            $schedule = Schedule::firstwhere('id', $id);
 
-            $revision = new RevisionSchedule ();
+            $revision = new RevisionSchedule();
             $revision->schedule_id = $schedule['id'];
             $revision->month_id = $schedule['month_id'];
             $revision->user_id = $schedule['user_id'];
@@ -272,9 +309,9 @@ class ScheduleController extends Controller
                 'status' => 200,
                 'message' => 'success add data'
             ]);
-      }catch(Exception $err){
+        } catch (Exception $err) {
             return response()->json([
-                'status'=> 500,
+                'status' => 500,
                 'error' => $err->getMessage()
             ]);
         }
@@ -284,13 +321,15 @@ class ScheduleController extends Controller
 
     public function dataScheduleROB()
     {
-        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROB','ROM','ROH'])->get();
+        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')
+            ->whereIn('operation_plan', ['ROB', 'ROM', 'ROH'])
+            ->whereIn('approve_id', [1, 2, 4])->get();
         if (request()->ajax()) {
             return Datatables::of($schedule)
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="btn btn-sm btn-success" >Disetujui</a>';;
+                        $btn = '<a class="text-success" >Disetujui</a>';;
                     } else if ($schedule->approve_id == 4) {
                         $btn = '<a> - </a>';;
                     } else if ($schedule->approve_id == 3) {
@@ -313,13 +352,13 @@ class ScheduleController extends Controller
 
     public function dataScheduleROM()
     {
-        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROM','ROH']);
+        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROM', 'ROH'])->whereIn('approve_id', [1, 2, 4])->get();
         if (request()->ajax()) {
             return Datatables::of($schedule)
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="btn btn-sm btn-danger" >Disetujui</a>';;
+                        $btn = '<a class="text-success" >Disetujui</a>';;
                     } else if ($schedule->approve_id == 4) {
                         $btn = '<a> - </a>';;
                     } else if ($schedule->approve_id == 3) {
@@ -342,13 +381,13 @@ class ScheduleController extends Controller
 
     public function dataScheduleROH()
     {
-        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->where('operation_plan', '=', 'ROH');
+        $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->where('operation_plan', '=', 'ROH')->whereIn('approve_id', [1, 2, 4])->get();
         if (request()->ajax()) {
             return Datatables::of($schedule)
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="btn btn-sm btn-danger" >Disetujui</a>';;
+                        $btn = '<a class="text-sucess" >Disetujui</a>';;
                     } else if ($schedule->approve_id == 4) {
                         $btn = '<a> - </a>';;
                     } else if ($schedule->approve_id == 3) {
@@ -493,7 +532,7 @@ class ScheduleController extends Controller
             $schedule->operation_plan = $request['operation_plan'];
             $schedule->save();
 
-            $revision = new RevisionSchedule ();
+            $revision = new RevisionSchedule();
             $revision->schedule_id = $schedule['id'];
             $revision->month_id = $schedule['month_id'];
             $revision->user_id = $schedule['user_id'];
@@ -528,34 +567,36 @@ class ScheduleController extends Controller
         }
     }
 
-    public function destroy($id){
-        try{
+    public function destroy($id)
+    {
+        try {
             $schedule = Schedule::firstwhere('id', $id);
 
             $schedule->delete();
-            
+
             return response()->json([
                 'status' => '200',
                 'message' => 'Success Delete Data'
             ]);
-        }catch(Exception $err){
+        } catch (Exception $err) {
             return response()->json([
                 'status' => '500',
-                'message' => $err->getMessage() 
+                'message' => $err->getMessage()
             ]);
         }
     }
 
-    public function acceptSchedule($id){
-        try{
+    public function acceptSchedule($id)
+    {
+        try {
             $Revschedule = RevisionSchedule::firstwhere('id', $id);
-            $schedule = Schedule::firstwhere('id',$Revschedule['schedule_id']);
+            $schedule = Schedule::firstwhere('id', $Revschedule['schedule_id']);
 
             $schedule->operation_plan = $Revschedule['operation_plan'];
             $schedule->start_date = $Revschedule['start_date'];
             $schedule->end_date = $Revschedule['end_date'];
-            $schedule->start_hours= $Revschedule['start_hours'];
-            $schedule->end_hours= $Revschedule['end_hours'];
+            $schedule->start_hours = $Revschedule['start_hours'];
+            $schedule->end_hours = $Revschedule['end_hours'];
             $schedule->approve_id = 1;
             $schedule->save();
 
@@ -566,7 +607,7 @@ class ScheduleController extends Controller
                 'status' => '200',
                 'message' => $Revschedule
             ]);
-        }catch(Exception $err){
+        } catch (Exception $err) {
             return response()->json([
                 'status' => '500',
                 'message' => $err->getMessage()
@@ -574,36 +615,37 @@ class ScheduleController extends Controller
         }
     }
 
-    public function declineSchedule($id){
-        try{
+    public function declineSchedule($id)
+    {
+        try {
             $Revschedule = RevisionSchedule::firstwhere('id', $id);
-            $schedule = Schedule::firstwhere('id',$Revschedule['schedule_id']);
+            $schedule = Schedule::firstwhere('id', $Revschedule['schedule_id']);
 
             $schedule->approve_id = 2;
             $schedule->save();
-            $Revschedule->approve_id=2;
+            $Revschedule->approve_id = 2;
             $Revschedule->save();
-            
+
             return response()->json([
                 'status' => '200',
                 'message' => 'Success Update Data'
             ]);
-        }catch(Exception $err){
+        } catch (Exception $err) {
             return response()->json([
                 'status' => '500',
-                'message' => $err->getMessage() 
+                'message' => $err->getMessage()
             ]);
         }
     }
 
     public function export_excel()
-	{
-		return Excel::download(new ScheduleExport, 'schedule.xlsx');
-	}
+    {
+        return Excel::download(new ScheduleExport, 'schedule.xlsx');
+    }
 
     public function ImportSchedule(Request $request)
     {
-    
+
 
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:csv,xls,xlsx',
@@ -612,13 +654,13 @@ class ScheduleController extends Controller
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
-        }else {
+        } else {
             $file = $request->file('file');
             $file_name = 'schedule' . \Carbon\Carbon::now()->isoFormat('D-M-YY-hh-mm-ss-') . $file->getClientOriginalName();
             $file_path = 'imports/schedule';
             $file->move($file_path, $file_name);
 
-            
+
             try {
                 $import_schedules = Excel::import(new ScheduleImport(), public_path('/imports/schedule/' . $file_name));
             } catch (\Throwable $th) {

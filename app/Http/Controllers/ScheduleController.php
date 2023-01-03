@@ -64,7 +64,7 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="btn btn-sm btn-danger" >Disetujui</a>';;
+                        $btn = '<a class="btn btn-sm btn-success" >Disetujui</a>';;
                     } else if ($schedule->approve_id == 3) {
                         $btn = '<button id="changestatus" class="btn btn-sm btn-success" data-id="' . $schedule->id . '">Setujui</button>';;
                         $btn .= '<button id="changeapprove" class="btn btn-sm btn-danger text" data-id="' . $schedule->id . '">Tolak</button>';;
@@ -290,11 +290,11 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="btn btn-sm btn-danger" >Disetujui</a>';;
+                        $btn = '<a class="btn btn-sm btn-success" >Disetujui</a>';;
                     } else if ($schedule->approve_id == 4) {
                         $btn = '<a> - </a>';;
                     } else if ($schedule->approve_id == 3) {
-                        $btn = '<button id="changestatus" class="btn btn-sm btn-danger" data-id="1">Setujui</button>';;
+                        $btn = '<button id="changestatus" class="btn btn-sm btn-success" data-id="1">Setujui</button>';;
                         $btn .= '<button id="changestatus" class="btn btn-sm btn-danger" data-id="2">Tolak</button>';;
                     } else {
                         $btn = '<a class="btn btn-sm btn-danger" >Ditolak</a>';;
@@ -323,7 +323,7 @@ class ScheduleController extends Controller
                     } else if ($schedule->approve_id == 4) {
                         $btn = '<a> - </a>';;
                     } else if ($schedule->approve_id == 3) {
-                        $btn = '<button id="changestatus" class="btn btn-sm btn-danger" data-id="1">Setujui</button>';;
+                        $btn = '<button id="changestatus" class="btn btn-sm btn-success" data-id="1">Setujui</button>';;
                         $btn .= '<button id="changestatus" class="btn btn-sm btn-danger" data-id="2">Tolak</button>';;
                     } else {
                         $btn = '<a class="btn btn-sm btn-danger" >Ditolak</a>';;
@@ -352,7 +352,7 @@ class ScheduleController extends Controller
                     } else if ($schedule->approve_id == 4) {
                         $btn = '<a> - </a>';;
                     } else if ($schedule->approve_id == 3) {
-                        $btn = '<button id="changestatus" class="btn btn-sm btn-danger" data-id="1">Setujui</button>';;
+                        $btn = '<button id="changestatus" class="btn btn-sm btn-success" data-id="1">Setujui</button>';;
                         $btn .= '<button id="changestatus" class="btn btn-sm btn-danger" data-id="2">Tolak</button>';;
                     } else {
                         $btn = '<a class="btn btn-sm btn-danger" >Ditolak</a>';;

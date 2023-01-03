@@ -122,6 +122,20 @@ class ScheduleController extends Controller
     public function dataScheduleROBULTG()
     {
 
+        $dateNow = carbon::now();
+        $day = $dateNow->format('d');
+        $hour = $dateNow->format('H');
+        $conv_hour = (int)$hour;
+        $conv_day = (int)$day;
+
+        if ($conv_day > 9 && $conv_hour > 15) {
+            $status = 'Inactive';
+        } else {
+            $status = 'Active';
+        }
+        
+        
+
 
         $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')->whereIn('operation_plan', ['ROB', 'ROM', 'ROH'])->get();
 
@@ -141,10 +155,29 @@ class ScheduleController extends Controller
                     return $btn;
                 })
                 ->addColumn('action', function ($schedule) {
+                    
+                    $dateNow = carbon::now()->addMonths(1);
+                    $day = $dateNow->format('d');
+                    $hour = $dateNow->format('H');
+                    $conv_hour = (int)$hour;
+                    $conv_day = (int)$day;
+                    $date1= $dateNow->addMonths(1)->format('m');
+
+                    if ($conv_day > 9 && $conv_hour > 15) {
+                        $status = 'Inactive';
+                    } else {
+                        $status = 'Active';
+                    }
+
                     if ($schedule->submitted != 0) {
                         $button = '<a>-</a>';
                     } else {
-                        $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
+                        if($status == 'Active' && $schedule->month_id == $date1 && $schedule->operation_plan == 'ROB'){
+                            $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
+                        }else {
+                            $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success disabled">Ajukan Revisi</a>';
+                        }
+                        
                     }
 
                     return $button;
@@ -152,7 +185,7 @@ class ScheduleController extends Controller
                 ->rawColumns(['approve', 'action'])
                 ->make(true);
         }
-        return view('admin.schedule.indexROBULTG')->with('title', 'Jadwal ROB ULTG');
+        return view('admin.schedule.indexROBULTG')->with('title', 'Jadwal ROB ULTG')->with('status' , $status);
     }
 
     public function dataScheduleROMULTG()

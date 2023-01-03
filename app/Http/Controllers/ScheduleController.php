@@ -211,10 +211,10 @@ class ScheduleController extends Controller
                     if ($schedule->submitted != 0) {
                         $button = '<a>-</a>';
                     } else {
-                        if ($status == 'Active') {
-                            $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
-                        } else {
+                        if ($status == 'Inactive' && $schedule->operation_plan == 'ROM') {
                             $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success disabled">Ajukan Revisi</a>';
+                        } else {
+                            $button = '<a href="' . route('schedule.show.update.revision', $schedule->id) . '" class="btn btn-sm btn-success">Ajukan Revisi</a>';
                         }
                     }
 

@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Schedule;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -13,13 +14,21 @@ class ScheduleExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return Schedule::all();
+        
+        $date = Carbon::now();
+        $month=$date->format('m');
+        $conv_month= (int)$month;
+        $export = Schedule::where('month_id',$conv_month )->get();
+        return $export;
     }
 
     public function headings(): array
-    {
+    {  
+        $date = Carbon::now();
+        $title=$date->format('F');
         return [
-            'id',
+            ['Lpaoran Jadwal Bulan', $title],
+            ['id',
             'month_id',
             'user_id',
             'role_id',
@@ -42,7 +51,7 @@ class ScheduleExport implements FromCollection, WithHeadings
             'approve_id',
             'created_at',
             'updated_at',
-            'tag'
+            'tag']
         ];
     }
 }

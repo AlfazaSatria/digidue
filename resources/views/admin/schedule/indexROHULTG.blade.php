@@ -6,9 +6,15 @@
     <div class="card-header">
         <h4>Daftar Jadwal ROH</h4>
         <div class="card-header-action">
-            <a href="{{ route('schedule.show.add.schedule.ROH.ultg') }}" class="btn btn-icon icon-left btn-info"><i class="fas fa-plus"
-                    type="button"></i>Tambah Jadwal
+            @if($status == 'Active')
+            <a href="{{ route('schedule.show.add.schedule.ROB.ultg') }}" class="btn btn-icon icon-left btn-info"><i
+                    class="fas fa-plus" type="button"></i>Tambah Jadwal
             </a>
+            @else
+            <a href="{{ route('schedule.show.add.schedule.ROB.ultg') }}" class="btn btn-icon icon-left btn-info disabled"><i
+                    class="fas fa-plus" type="button"></i>Tambah Jadwal
+            </a>
+            @endif
         </div>
     </div>
     <div class="card-body">

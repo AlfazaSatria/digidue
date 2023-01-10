@@ -28,7 +28,7 @@ class Schedule extends Model
         'note',
         'notif',
         'operation_plan',
-        'approve_id'
+        'approve_id',
     ];
 
     public function month()

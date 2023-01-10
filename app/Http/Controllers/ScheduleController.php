@@ -33,14 +33,17 @@ class ScheduleController extends Controller
     {
         $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')
             ->whereIn('approve_id', [1, 2, 4])
-            ->whereIn('role_id', [1, 2]);
+            ->whereIn('role_id', [1, 2,3]);
 
         if (request()->ajax()) {
             return Datatables::of($schedule)
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
-                    $btn = '<a> - </a>';;
-
+                    if ($schedule->approve_id == 1) {
+                        $btn = '<a class="btn btn-sm btn-success text-light" >On Schedule</a>';;
+                    } else if ($schedule->approve_id == 4) {
+                        $btn = '<a class="btn btn-sm btn-danger text-light" >ABK</a>';;
+                    } 
                     return $btn;
                 })
                 ->addColumn('action', function ($schedule) {
@@ -64,12 +67,12 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="btn btn-sm btn-success" >Disetujui</a>';;
+                        $btn = '<a class="btn btn-sm btn-success" >On Schedule</a>';;
                     } else if ($schedule->approve_id == 3) {
                         $btn = '<button id="changestatus" class="btn btn-sm btn-success" data-id="' . $schedule->id . '">Setujui</button>';;
                         $btn .= '<button id="changeapprove" class="btn btn-sm btn-danger text" data-id="' . $schedule->id . '">Tolak</button>';;
                     } else {
-                        $btn = '<a class="btn btn-sm btn-danger" >Ditolak</a>';;
+                        $btn = '<a class="btn btn-sm btn-danger" >ABK</a>';;
                     }
                     return $btn;
                 })
@@ -94,9 +97,9 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="text-success" >Pengajuan Disetujui</a>';
+                        $btn = '<a class="text-success" >On Schedule</a>';
                     } else if ($schedule->approve_id == 2) {
-                        $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
+                        $btn = '<a class="btn btn-sm btn-danger text-light" >ABK</a>';
                     } else if ($schedule->submitted != 0) {
                         $btn = '<a >Proses Pengajuan</a>';
                     } else {
@@ -144,9 +147,9 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="text-success" >Pengajuan Disetujui</a>';
+                        $btn = '<a class="text-success" >On Schedule</a>';
                     } else if ($schedule->approve_id == 2) {
-                        $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
+                        $btn = '<a class="btn btn-sm btn-danger text-light" >ABK</a>';
                     } else if ($schedule->submitted != 0) {
                         $btn = '<a >Proses Pengajuan</a>';
                     } else {
@@ -214,9 +217,9 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="text-sucess" >Pengajuan Disetujui</a>';
+                        $btn = '<a class="text-sucess" >On Schedule</a>';
                     } else if ($schedule->approve_id == 2) {
-                        $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
+                        $btn = '<a class="btn btn-sm btn-danger text-light" >ABK</a>';
                     } else if ($schedule->submitted != 0) {
                         $btn = '<a >Proses Pengajuan</a>';
                     } else {
@@ -281,9 +284,9 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="text-success" >Pengajuan Disetujui</a>';
+                        $btn = '<a class="text-success" >On Schedule</a>';
                     } else if ($schedule->approve_id == 2) {
-                        $btn = '<a class="btn btn-sm btn-danger text-light" >Pengajuan Ditolak</a>';
+                        $btn = '<a class="btn btn-sm btn-danger text-light" >ABK</a>';
                     } else if ($schedule->submitted != 0) {
                         $btn = '<a >Proses Pengajuan</a>';
                     } else {
@@ -400,14 +403,14 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="text-success" >Disetujui</a>';;
+                        $btn = '<a class="text-success" >On Schedule</a>';;
                     } else if ($schedule->approve_id == 4) {
                         $btn = '<a> - </a>';;
                     } else if ($schedule->approve_id == 3) {
                         $btn = '<button id="changestatus" class="btn btn-sm btn-success" data-id="1">Setujui</button>';;
                         $btn .= '<button id="changestatus" class="btn btn-sm btn-danger" data-id="2">Tolak</button>';;
                     } else {
-                        $btn = '<a class="btn btn-sm btn-danger" >Ditolak</a>';;
+                        $btn = '<a class="btn btn-sm btn-danger" >ABK</a>';;
                     }
                     return $btn;
                 })
@@ -429,14 +432,14 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="text-success" >Disetujui</a>';;
+                        $btn = '<a class="text-success" >On Schedule</a>';;
                     } else if ($schedule->approve_id == 4) {
                         $btn = '<a> - </a>';;
                     } else if ($schedule->approve_id == 3) {
                         $btn = '<button id="changestatus" class="btn btn-sm btn-success" data-id="1">Setujui</button>';;
                         $btn .= '<button id="changestatus" class="btn btn-sm btn-danger" data-id="2">Tolak</button>';;
                     } else {
-                        $btn = '<a class="btn btn-sm btn-danger" >Ditolak</a>';;
+                        $btn = '<a class="btn btn-sm btn-danger" >ABK</a>';;
                     }
                     return $btn;
                 })
@@ -458,14 +461,14 @@ class ScheduleController extends Controller
                 ->addIndexColumn()
                 ->addColumn('approve', function ($schedule) {
                     if ($schedule->approve_id == 1) {
-                        $btn = '<a class="text-sucess" >Disetujui</a>';;
+                        $btn = '<a class="text-sucess" >On Schedule</a>';;
                     } else if ($schedule->approve_id == 4) {
                         $btn = '<a> - </a>';;
                     } else if ($schedule->approve_id == 3) {
                         $btn = '<button id="changestatus" class="btn btn-sm btn-success" data-id="1">Setujui</button>';;
                         $btn .= '<button id="changestatus" class="btn btn-sm btn-danger" data-id="2">Tolak</button>';;
                     } else {
-                        $btn = '<a class="btn btn-sm btn-danger" >Ditolak</a>';;
+                        $btn = '<a class="btn btn-sm btn-danger" >ABK</a>';;
                     }
                     return $btn;
                 })

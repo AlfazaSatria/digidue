@@ -33,7 +33,7 @@ class ScheduleController extends Controller
     {
         $schedule = Schedule::with('bay_type', 'equipment_out', 'location', 'month')
             ->whereIn('approve_id', [1, 2, 4])
-            ->whereIn('role_id', [1, 2,3]);
+            ->whereIn('role_id', [1, 2]);
 
         if (request()->ajax()) {
             return Datatables::of($schedule)
@@ -672,6 +672,7 @@ class ScheduleController extends Controller
             $schedule->start_hours = $Revschedule['start_hours'];
             $schedule->end_hours = $Revschedule['end_hours'];
             $schedule->approve_id = 1;
+            $schedule->role_id = 1;
             $schedule->save();
 
             $Revschedule->approve_id = 1;

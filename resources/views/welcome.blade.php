@@ -78,7 +78,8 @@
 
 <body>
     <div class="card">
-        <div class="card-header">
+        <div class="card-header text-center">
+            <img src="{{ asset('/images/logo.png') }}" style="width:100px; height:auto" alt="">
           <h4>Digidue</h4>
         </div>
        

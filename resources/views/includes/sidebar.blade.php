@@ -2,6 +2,7 @@
 	<aside id="sidebar-wrapper">
 		<div class="sidebar-brand">
 			<a href="{{ route('home') }}"> </a>
+			<img src="{{ asset('/images/logo.png') }}" style="width:50px; height:auto" alt="">
 		</div>
 
 		<ul class="sidebar-menu">
